@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+//トレイトファイルパス忘れがち、気を付ける
 use App\User;
 
 class UsersController extends Controller

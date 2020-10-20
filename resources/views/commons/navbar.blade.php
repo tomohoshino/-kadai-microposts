@@ -18,7 +18,7 @@
                         <ul class="dropdown-menu dropdown-menu-right">
                             {{-- ユーザ詳細ページへのリンク --}}
                             <li class="dropdown-item">{!! link_to_route('users.show', 'My profile', ['user' => Auth::id()]) !!}</li>
-                            {--Auth IDはログインユーザのIDの取得ができる、動きはAuth::user()->idと同じ--}
+                            {{--Auth IDはログインユーザのIDの取得ができる、動きはAuth::user()->idと同じ--}}
                             <li class="dropdown-divider"></li>
                             {{-- ログアウトへのリンク --}}
                             <li class="dropdown-item">{!! link_to_route('logout.get', 'Logout') !!}</li>
