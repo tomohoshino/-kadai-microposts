@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-{--sectionとendsectionはセット、sectionの内容はcontentに入る--}
+{{--sectionとendsectionはセット、sectionの内容はcontentに入る--}}
 @section('content')
 
 
@@ -24,7 +24,7 @@
 
                 {!! Form::submit('Log in', ['class' => 'btn btn-primary btn-block']) !!}
             {!! Form::close() !!}
-            {--ユーザがログインしてたら↑してなければ↓にルーティング--}
+            {{--ユーザがログインしてたら↑してなければ↓にルーティング--}}
             {{-- ユーザ登録ページへのリンク --}}
             <p class="mt-2">New user? {!! link_to_route('signup.get', 'Sign up now!') !!}</p>
         </div>

@@ -36,11 +36,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    
-    
-    
-    
-    
+
     //cp10.1
     
     /**
@@ -56,7 +52,7 @@ class User extends Authenticatable
     
     public function loadRelationshipCounts()
     {
-         $this->loadCount(['microposts', 'followings', 'followers']);
+         $this->loadCount(['microposts', 'followings', 'followers','favorites']);
     }
     /**
      * このユーザがフォロー中のユーザ。（ Userモデルとの関係を定義）
@@ -74,12 +70,6 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'user_follow', 'follow_id', 'user_id')->withTimestamps();
     }
 
-
-
-
-
-
-    
     /**
      * $userIdで指定されたユーザをフォローする。
      *
@@ -154,6 +144,52 @@ class User extends Authenticatable
         $userIds[] = $this->id;
         // それらのユーザが所有する投稿に絞り込む
         return Micropost::whereIn('user_id', $userIds);
+    }
+    
+    //ふぁぼ一覧取得
+    public function favorites()
+    {
+            
+        return $this->belongsToMany(Micropost::class, 'favorites','user_id', 'micropost_id')->withTimestamps();
+        
+    }
+    
+    //ふぁぼ追加
+    public function favorite($micropostId)
+    {
+        // すでにお気に入りに追加しているかの確認
+        $exist = $this->is_favoriting($micropostId);
+
+        if ($exist) {
+            // すでにお気に入りしていれば何もしない
+            return false;
+        } else {
+            // お気に入りにまだ追加していなかったら追加する。
+            $this->favorites()->attach($micropostId);
+            return true;
+        }
+    }
+
+    
+    //ふぁぼ削除
+    public function unfavorite($micropostId)
+    {
+            // すでにお気に入りに追加しているかの確認
+        $exist = $this->is_favoriting($micropostId);
+
+        if ($exist) {
+            // すでにお気に入りしていれば何もしな 
+            $this->favorites()->detach($micropostId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+        
+    public function is_favoriting($micropostId)
+    {
+         // ふぁぼ中投稿の中に $micropostIdのものが存在するか
+        return $this->favorites()->where('micropost_id',$micropostId)->exists();
     }
  
 }
